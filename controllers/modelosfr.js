@@ -1,12 +1,12 @@
 'use strict'
 //OJO CAMBIAR NOMBRE DE COLLECCION Y MODEL SEGÚN LA CONSULTA
-var Jaula = require('../models/jaula');
+var Modelosfr = require('../models/modelosfr');
 //================================================
 // CREAR UN ITEM
 //================================================
 function registraItem(req,res){
 	//OJO CAMBIAR NOMBRE DE COLLECCION SEGÚN LA CONSULTA
-	var item = new Jaula(req.body);
+	var item = new Modelosfr(req.body);
 	//OJO CAMBIAR CONDICIONES SEGÚN MODELO
 	item.save((err, itemStored) => {
 		if(err){
@@ -32,9 +32,9 @@ function registraItem(req,res){
 //================================================
 function actualizaItem(req,res){
 	var itemId = req.params.id; 
-	var params = req.body;  
+	var params = req.body;      
  	//OJO CAMBIAR NOMBRE DE COLLECCION SEGÚN LA CONSULTA
-	Jaula.findByIdAndUpdate(itemId, params, { new: true }, (err, itemUpdated) => { 
+	Modelosfr.findByIdAndUpdate(itemId, params, { new: true }, (err, itemUpdated) => { 
 		if(err){
 			res.status(500).send({
 				error: err,
@@ -59,44 +59,14 @@ function actualizaItem(req,res){
 //================================================
 function itemsTodos(req,res){
 	//OJO CAMBIAR NOMBRE DE COLLECCION Y CAMPOS SEGÚN LA CONSULTA
-	Jaula.find({}) 
+	Modelosfr.find({}) 
 	   .exec(
 	   		(err, itemsFound) => {
 	   			if (err){
 	   				res.status(500).send({message: 'Error cargando items'});
 	   			}else{
 	   				//OJO CAMBIAR NOMBRE DE COLLECCION SEGÚN LA CONSULTA
-	   				Jaula.countDocuments({}, (err,conteo) =>{
-	   					res.status(200).send({
-								items: itemsFound,
-								total: conteo
-						});
-	   				});
-	   			}
-	   		}
-	   	);
-}
-
-//================================================
-// MOSTRAR TODOS LOS ITEMS CON DETALLE DE LINEA
-//================================================
-function itemsTodosCompleto(req,res){
-	//OJO CAMBIAR NOMBRE DE COLLECCION Y CAMPOS SEGÚN LA CONSULTA
-	Jaula.find({})
-		.populate({
-	   		path:'linea'
-	   	})
-	   .populate({
-	   		path:'doser'
-	   	})
-	   .populate('selector')
-	   .exec(
-	   		(err, itemsFound) => {
-	   			if (err){
-	   				res.status(500).send({message: 'Error cargando items'});
-	   			}else{
-	   				//OJO CAMBIAR NOMBRE DE COLLECCION SEGÚN LA CONSULTA
-	   				Jaula.countDocuments({}, (err,conteo) =>{
+	   				Modelosfr.countDocuments({}, (err,conteo) =>{
 	   					res.status(200).send({
 								items: itemsFound,
 								total: conteo
@@ -113,7 +83,7 @@ function itemsTodosCompleto(req,res){
 function deleteItem(req,res){
 	var itemId = req.params.id; // éste parámetro se pone en el url despues de /
 	//OJO CAMBIAR NOMBRE DE COLLECCION SEGÚN LA CONSULTA
-	Jaula.findByIdAndRemove(itemId, (err, itemRemoved) => {
+	Modelosfr.findByIdAndRemove(itemId, (err, itemRemoved) => {
 		if(err){
 			res.status(500).send({message: 'Error al borrar registro'});
 		}else{
@@ -130,6 +100,5 @@ module.exports = {
 	registraItem,
 	actualizaItem,
 	itemsTodos,
-	itemsTodosCompleto,
 	deleteItem
 };

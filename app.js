@@ -20,6 +20,9 @@ var Sensor_routes       = require('./routes/sensor');
 var Sensores_routes     = require('./routes/sensores');
 var Silo_routes         = require('./routes/silo');
 var Tipopez_routes      = require('./routes/tipopez');
+var Modelosfr_routes    = require('./routes/modelosfr');
+var Plan_routes         = require('./routes/plan');
+
 
 // create application/x-www-form-urlencoded parser
 app.use(bodyParser.urlencoded({extended:false}));
@@ -50,6 +53,8 @@ app.use( '/api', Sensor_routes       );
 app.use( '/api', Sensores_routes     );
 app.use( '/api', Silo_routes         );
 app.use( '/api', Tipopez_routes      );
+app.use( '/api', Modelosfr_routes    );
+app.use( '/api', Plan_routes         );
 
 app.get('*', function(req,res,next){
 	res.sendFile(path.resolve('./client/index.html'));

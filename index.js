@@ -12,7 +12,7 @@ var broker = require('./broker');
 
 var SubscriberController = require('./controllers/subscriber');
 var PublisherController  = require('./controllers/publisher');
-//var config = require('./controllers/config');
+var plan = require('./controllers/plan');
 
 //mongoose: comandos para manejo de mongodb
 var mongoose = require('mongoose');
@@ -28,7 +28,7 @@ if (err) {
 	const server = app.listen(port, function(){
 	    console.log("Servidor de Api's de IoFish cloud escuchando en http://localhost:" + port);
 	    //Config inical
-	    //config.crearItem();
+	    plan.crearItem();
 	});
 
 	const io = socket.listen(server,{

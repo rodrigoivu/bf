@@ -5,9 +5,11 @@ var mqtt = require('mqtt')
 
 var socketLocal; // se rescata del index.js
 var ioLocal; // se rescata del index.js
-//var client  = mqtt.connect('mqtt://192.168.0.5') // IP MAC
+//var client  = mqtt.connect('mqtt://192.168.0.7') // IP MAC
 var client  = mqtt.connect('mqtt://18.224.109.40') //
 client.on('connect', () => {
+	client.subscribe('iofish/ciclo');
+	client.subscribe('iofish/linea');
     client.subscribe('iofish/calibrar');
 })
 client.on('message', (topic, message) => {
@@ -15,6 +17,17 @@ client.on('message', (topic, message) => {
     var items;
    	items = JSON.parse(message);
  	
+   	if(topic == 'iofish/ciclo'){
+		//saveChancadordata(items);
+		mensajeCiclo(items)
+	}
+
+	if(topic == 'iofish/linea'){
+		//saveChancadordata(items);
+		mensajeLinea(items)
+
+	}
+
    	if(topic == 'iofish/calibrar'){
 		//saveChancadordata(items);
 		console.log(items);
@@ -116,6 +129,18 @@ function asignarSocket(socket,io){
 function mensajeCalibrarOk(data){
 	if(socketLocal){
 		ioLocal.emit('CalibrarOk',{data: data});
+	}
+}
+
+function mensajeCiclo(data){
+	if(socketLocal){
+		ioLocal.emit('ciclo',{data: data});
+	}
+}
+
+function mensajeLinea(data){
+	if(socketLocal){
+		ioLocal.emit('linea',{data: data});
 	}
 }
 
