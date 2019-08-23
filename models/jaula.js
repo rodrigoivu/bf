@@ -31,7 +31,12 @@ var JaulaSchema = new Schema({
 	tpo_sel_jaula: { type: Number,  required: false },
 	posx:          { type: Number,  required: false },
 	posy:          { type: Number,  required: false },
-	
+	tipo:          { type: String,  required: false }, 
+	largo:         { type: Number,  required: false },
+	ancho:         { type: Number,  required: false },
+	alto:          { type: Number,  required: false },
+	diametro:      { type: Number,  required: false },
+	min_visita:    { type: Number,  required: false },
 },{ collection: 'jaula'});
 
 //EventoSchema.plugin( uniqueValidator, { message: '{PATH} debe ser único'}) //afecta a los campos con unique: true. PATH toma el valor del campo correspondiente
