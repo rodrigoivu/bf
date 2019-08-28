@@ -1,11 +1,12 @@
 var mqtt = require('mqtt')
-
+var Jaula = require('../models/jaula');
+var Linea = require('../models/linea');
+var PublisherController  = require('./publisher');
 //var Controllerbateriaharnero = require('../controllers/bateriaharnero');
-
 
 var socketLocal; // se rescata del index.js
 var ioLocal; // se rescata del index.js
-//var client  = mqtt.connect('mqtt://192.168.0.7') // IP MAC
+//var client  = mqtt.connect('mqtt://192.168.0.2') // IP MAC
 var client  = mqtt.connect('mqtt://18.224.109.40') //
 client.on('connect', () => {
 	client.subscribe('iofish/ciclo');
@@ -16,10 +17,10 @@ client.on('message', (topic, message) => {
 
     var items;
    	items = JSON.parse(message);
- 	
+
    	if(topic == 'iofish/ciclo'){
-		//saveChancadordata(items);
-		mensajeCiclo(items)
+		saveJaulaData(items);
+		
 	}
 
 	if(topic == 'iofish/linea'){
@@ -44,6 +45,56 @@ client.on('message', (topic, message) => {
 	
 })
 
+//================================================
+// SAVE JAULA DATA
+//================================================
+function saveJaulaData(item){
+	
+	if(item.BD == 1){
+		//console.log('Guardo: '+item.JA);
+		var jauladata = new Jaula;
+		var jaulaSel;
+		Linea.find({}) 
+		   .exec(
+		   		(err, itemsFound) => {
+		   			if (err){
+		   				console.log(err);
+		   			}else{
+		   				var lineaSel=itemsFound[item.LI-1];
+		   				//console.log(lineaSel._id);
+		   				Jaula.find({'linea': lineaSel._id})
+		   					.exec(
+						   		(err1, itemsFound1) => {
+						   			if (err1){
+						   				console.log(err1);
+						   			}else{
+						   				jaulaSel = itemsFound1[item.JA-1];
+
+						   				Jaula.findByIdAndUpdate(jaulaSel._id, {'dado':item.DA}, { new: true }, (err2, itemUpdated) => { 
+											if(err2){
+												console.log(err2);
+											}else{
+												if(!itemUpdated){
+													console.log('Imposible actualizar item');
+													
+												}else{
+													//console.log(itemUpdated);
+													PublisherController.setJaulaBD(item.LI,item.JA);
+
+												}
+											}
+										});
+						   			}
+						   		}
+						   	);
+		   				
+		   			}
+		   		}
+		   	);
+	}
+	
+	mensajeCiclo(item)
+}
 
 //================================================
 // SAVE ESFUERZO CHANCADOR

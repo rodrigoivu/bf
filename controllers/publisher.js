@@ -1,5 +1,5 @@
 var mqtt = require('mqtt');
-//var client  = mqtt.connect('mqtt://192.168.0.7') //IP MAC
+//var client  = mqtt.connect('mqtt://192.168.0.2') //IP MAC
 var client  = mqtt.connect('mqtt://18.224.109.40') //
 var dataMqtt;
 var dataSetJaula;
@@ -18,7 +18,14 @@ function enviarMqtt(){
 function setJaula(){
 	client.publish('iofish/setjaula', dataSetJaula);
 }
+
+function setJaulaBD(LI,JA){
+	dataBD = '{"LI":'+LI+',"JA":'+JA+',"BD":'+2+'}';
+	client.publish('iofish/setjaulaBD', dataBD);
+}
+
 function alimentar(){
+
 	client.publish('iofish/alimentar', ordenAlimentar);
 }
 
@@ -41,5 +48,6 @@ module.exports = {
 	recibeOrden,
 	enviarMqtt,
 	setJaula,
-	alimentar
+	alimentar,
+	setJaulaBD
 };
