@@ -38,6 +38,9 @@ var JaulaSchema = new Schema({
 	diametro:      { type: Number,  required: false },
 	min_visita:    { type: Number,  required: false },
 	hz_blower:     { type: Number,  required: false },
+	manual:        { type: Boolean,  required: false },
+	obj_med:       { type: Number,  required: false },
+
 },{ collection: 'jaula'});
 
 //EventoSchema.plugin( uniqueValidator, { message: '{PATH} debe ser único'}) //afecta a los campos con unique: true. PATH toma el valor del campo correspondiente

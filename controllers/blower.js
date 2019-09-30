@@ -32,7 +32,7 @@ function registraItem(req,res){
 //================================================
 function actualizaItem(req,res){
 	var itemId = req.params.id; 
-	var params = req.body;      
+	var params = req.body;    
  	//OJO CAMBIAR NOMBRE DE COLLECCION SEGÚN LA CONSULTA
 	Blower.findByIdAndUpdate(itemId, params, { new: true }, (err, itemUpdated) => { 
 		if(err){
